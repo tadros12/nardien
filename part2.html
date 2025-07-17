@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مسابقة مجمع نيقية - الجزء الثاني</title>
+    
+    <!-- 
+      CSS styles are embedded directly in the HTML for offline use.
+    -->
+    <style>
+        /* Basic CSS Reset */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { line-height: 1.5; -webkit-text-size-adjust: 100%; -moz-tab-size: 4; tab-size: 4; }
+        body { margin: 0; font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif; overscroll-behavior: none; }
+
+        /* Embedded Tailwind-like Utilities */
+        .bg-gray-100 { background-color: #f3f4f6; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-gray-200 { background-color: #e5e7eb; }
+        .bg-gray-600 { background-color: #4b5563; }
+        .bg-blue-600 { background-color: #2563eb; }
+        .hover\:bg-gray-700:hover { background-color: #374151; }
+        .hover\:bg-blue-700:hover { background-color: #1d4ed8; }
+        
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+
+        .min-h-screen { min-height: 100vh; }
+        .w-full { width: 100%; }
+        .max-w-4xl { max-width: 80rem; }
+        
+        .p-2 { padding: 0.5rem; }
+        .p-4 { padding: 1rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-8 { margin-top: 2rem; }
+        
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .overflow-hidden { overflow: hidden; }
+        .border-t { border-top-width: 1px; }
+        .border { border-width: 1px; border-color: #e5e7eb; }
+
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+
+        .text-center { text-align: center; }
+        .text-lg { font-size: 1.125rem; }
+        .text-md { font-size: 1rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-6xl { font-size: 4rem; }
+        
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        
+        .text-white { color: #ffffff; }
+        .text-gray-500 { color: #6b7280; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-700 { color: #374151; }
+        .text-gray-800 { color: #1f2937; }
+        .text-green-700 { color: #047857; }
+        
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+        ul { list-style: none; padding: 0; }
+
+        .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+        .focus\:ring-2:focus { --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color); --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color); box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000); }
+        .focus\:ring-opacity-50:focus { --tw-ring-opacity: 0.5; }
+        .focus\:ring-blue-500:focus { --tw-ring-color: rgba(59, 130, 246, var(--tw-ring-opacity, 1)); }
+        .focus\:ring-gray-500:focus { --tw-ring-color: rgba(107, 114, 128, var(--tw-ring-opacity, 1)); }
+
+        /* Custom App Styles */
+        .slide { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .slide.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .question-block {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .correct-answer {
+            color: #16a34a; /* Green-600 */
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-color: #4ade80; /* Green-400 */
+            text-decoration-thickness: 2px;
+        }
+        .nav-button {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            border: none;
+        }
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 640px) {
+            .sm\:p-4 { padding: 1rem; }
+            .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .sm\:text-lg { font-size: 1.125rem; }
+        }
+        @media (min-width: 768px) {
+            .md\:p-10 { padding: 2.5rem; }
+            .md\:h-\[60vh\] { height: 60vh; }
+            .md\:text-3xl { font-size: 1.875rem; }
+            .md\:text-6xl { font-size: 4rem; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-2 sm:p-4">
+
+    <div id="presentation-container" class="w-full max-w-4xl bg-gray-50 rounded-xl shadow-2xl overflow-hidden">
+        
+        <div id="slides-wrapper" class="p-4 md:p-10">
+
+            <!-- Slide 1: Title -->
+            <div class="slide active flex flex-col items-center justify-center text-center h-[70vh] md:h-[60vh]">
+                <h1 class="text-3xl md:text-6xl font-bold text-gray-800">مسابقة مجمع نيقية</h1>
+                <h2 class="text-xl md:text-3xl text-gray-600 mt-4">الجزء الثاني (الأسئلة ٥١ - ١٠٠)</h2>
+                <p class="text-lg text-gray-500 mt-8">أسئلة متقدمة</p>
+            </div>
+
+            <!-- Slides 2 & 3: Questions 51-53 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٥١ - ٥٣</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥١. لماذا كان مصطلح "أوموسيوس" مرفوضاً في القرن الثالث من قِبل آباء دافعوا عن الأرثوذكسية ضد سابيليوس؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه كان مصطلحاً غامضاً.</li>
+                        <li>ب. لأن سابيليوس استخدمه بمعنى مادي، يوحي بأن الآب والابن جزءان من نفس المادة.</li>
+                        <li>ج. لأن آريوس كان أول من استخدمه.</li>
+                        <li>د. لأنه لم يرد في الترجمة السبعينية.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٢. آية "اَلرَّبُّ قَنَانِي أَوَّلَ طَرِيقِهِ" (أمثال 8: 22) كانت من أقوى حجج الآريوسيين. كيف فسرها آباء نيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. فسروا "قناني" (خلقني) على أنها تشير إلى التجسد وتدبير الخلاص، وليس إلى الولادة الأزلية.</li>
+                        <li>ب. قالوا إنها تتحدث عن الحكمة المخلوقة وليس عن المسيح.</li>
+                        <li>ج. اعتبروا أن هذه الآية تمت إضافتها من قبل اليهود.</li>
+                        <li>د. رفضوا مناقشة هذه الآية.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٣. ما هو الخطر الخلاصي (Soteriological) المباشر لهرطقة آريوس؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أنها تجعل الخلاص اختيارياً.</li>
+                        <li>ب. إذا كان المسيح مخلوقاً، فهو لا يستطيع أن يخلّص البشرية أو يؤلّهها.</li>
+                        <li>ج. أنها تلغي ضرورة المعمودية.</li>
+                        <li>د. أنها تجعل الخلاص ممكناً بدون إيمان.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٥١ - ٥٣</h3>
+                 <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥١. لماذا كان مصطلح "أوموسيوس" مرفوضاً في القرن الثالث من قِبل آباء دافعوا عن الأرثوذكسية ضد سابيليوس؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه كان مصطلحاً غامضاً.</li>
+                        <li class="correct-answer">ب. لأن سابيليوس استخدمه بمعنى مادي، يوحي بأن الآب والابن جزءان من نفس المادة.</li>
+                        <li>ج. لأن آريوس كان أول من استخدمه.</li>
+                        <li>د. لأنه لم يرد في الترجمة السبعينية.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٢. آية "اَلرَّبُّ قَنَانِي أَوَّلَ طَرِيقِهِ" (أمثال 8: 22) كانت من أقوى حجج الآريوسيين. كيف فسرها آباء نيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li class="correct-answer">أ. فسروا "قناني" (خلقني) على أنها تشير إلى التجسد وتدبير الخلاص، وليس إلى الولادة الأزلية.</li>
+                        <li>ب. قالوا إنها تتحدث عن الحكمة المخلوقة وليس عن المسيح.</li>
+                        <li>ج. اعتبروا أن هذه الآية تمت إضافتها من قبل اليهود.</li>
+                        <li>د. رفضوا مناقشة هذه الآية.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٣. ما هو الخطر الخلاصي (Soteriological) المباشر لهرطقة آريوس؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أنها تجعل الخلاص اختيارياً.</li>
+                        <li class="correct-answer">ب. إذا كان المسيح مخلوقاً، فهو لا يستطيع أن يخلّص البشرية أو يؤلّهها.</li>
+                        <li>ج. أنها تلغي ضرورة المعمودية.</li>
+                        <li>د. أنها تجعل الخلاص ممكناً بدون إيمان.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Slides 4 & 5: Questions 54-56 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٥٤ - ٥٦</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٤. ما هو الفرق الدقيق في معاملة المجمع للإكليروس الميليتيين والإكليروس البوليانيين؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لا يوجد فرق، كلاهما أعيدت سيامته.</li>
+                        <li>ب. قُبلت سيامة الميليتيين (بعد إجراءات) بينما اعتُبرت سيامة البوليانيين باطلة تماماً.</li>
+                        <li>ج. قُبلت سيامة البوليانيين ورُفضت سيامة الميليتيين.</li>
+                        <li>د. كلاهما تم حرمانهما.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٥. ما هو السبب اللاهوتي وراء بطلان معمودية وسيامة البوليانيين (أتباع بولس الساموساطي)؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنهم كانوا يستخدمون الماء البارد.</li>
+                        <li>ب. لأنهم لم يكونوا يعمدون باسم الثالوث الأقدس بشكل صحيح، ناكرين ألوهية الابن.</li>
+                        <li>ج. لأنهم كانوا لا يغطسون ثلاث مرات.</li>
+                        <li>د. لأنهم كانوا يتبعون أسقفاً واحداً فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٦. أي قانون يؤسس لمبدأ "سلطة المجمع الإقليمي" كهيئة استئناف عليا داخل الإقليم؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. القانون الأول</li>
+                        <li>ب. القانون الرابع</li>
+                        <li>ج. القانون الخامس</li>
+                        <li>د. القانون السابع</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٥٤ - ٥٦</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٤. ما هو الفرق الدقيق في معاملة المجمع للإكليروس الميليتيين والإكليروس البوليانيين؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لا يوجد فرق، كلاهما أعيدت سيامته.</li>
+                        <li class="correct-answer">ب. قُبلت سيامة الميليتيين (بعد إجراءات) بينما اعتُبرت سيامة البوليانيين باطلة تماماً.</li>
+                        <li>ج. قُبلت سيامة البوليانيين ورُفضت سيامة الميليتيين.</li>
+                        <li>د. كلاهما تم حرمانهما.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٥. ما هو السبب اللاهوتي وراء بطلان معمودية وسيامة البوليانيين (أتباع بولس الساموساطي)؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنهم كانوا يستخدمون الماء البارد.</li>
+                        <li class="correct-answer">ب. لأنهم لم يكونوا يعمدون باسم الثالوث الأقدس بشكل صحيح، ناكرين ألوهية الابن.</li>
+                        <li>ج. لأنهم كانوا لا يغطسون ثلاث مرات.</li>
+                        <li>د. لأنهم كانوا يتبعون أسقفاً واحداً فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٦. أي قانون يؤسس لمبدأ "سلطة المجمع الإقليمي" كهيئة استئناف عليا داخل الإقليم؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. القانون الأول</li>
+                        <li>ب. القانون الرابع</li>
+                        <li class="correct-answer">ج. القانون الخامس</li>
+                        <li>د. القانون السابع</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Slides for Questions 57-59 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٥٧ - ٥٩</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٧. لماذا منع القانون العشرون السجود يوم الأحد وفي فترة الخماسين؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه كان يعتبر عادة وثنية.</li>
+                        <li>ب. لأن السجود علامة توبة، أما يوم الأحد وفترة الخماسين فهي فترة فرح بالقيامة.</li>
+                        <li>ج. لأنه كان يسبب إرهاقاً للمصلين.</li>
+                        <li>د. لأن الأرض كانت تعتبر غير طاهرة.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٨. "الذين يقولون أن [الابن] من أقنوم آخر أو جوهر آخر..." هذه العبارة في الحرومات كانت موجهة ضد أي فكر؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. ضد فكرة أن الابن والآب لهما نفس الجوهر.</li>
+                        <li>ب. ضد الفكر الآريوسي بأن جوهر الابن مختلف ومخلوق.</li>
+                        <li>ج. ضد السابليين الذين لم يميزوا بين الأقانيم.</li>
+                        <li>د. ضد فكرة أن الابن له جسد فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٩. ما هي المدة الإجمالية لفترة التوبة التي يفرضها القانون 11 على الجاحدين (lapsi)؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. سنة واحدة.</li>
+                        <li>ب. خمس سنوات.</li>
+                        <li>ج. اثنتا عشرة سنة.</li>
+                        <li>د. مدى الحياة.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٥٧ - ٥٩</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٧. لماذا منع القانون العشرون السجود يوم الأحد وفي فترة الخماسين؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه كان يعتبر عادة وثنية.</li>
+                        <li class="correct-answer">ب. لأن السجود علامة توبة، أما يوم الأحد وفترة الخماسين فهي فترة فرح بالقيامة.</li>
+                        <li>ج. لأنه كان يسبب إرهاقاً للمصلين.</li>
+                        <li>د. لأن الأرض كانت تعتبر غير طاهرة.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٨. "الذين يقولون أن [الابن] من أقنوم آخر أو جوهر آخر..." هذه العبارة في الحرومات كانت موجهة ضد أي فكر؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. ضد فكرة أن الابن والآب لهما نفس الجوهر.</li>
+                        <li class="correct-answer">ب. ضد الفكر الآريوسي بأن جوهر الابن مختلف ومخلوق.</li>
+                        <li>ج. ضد السابليين الذين لم يميزوا بين الأقانيم.</li>
+                        <li>د. ضد فكرة أن الابن له جسد فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٥٩. ما هي المدة الإجمالية لفترة التوبة التي يفرضها القانون 11 على الجاحدين (lapsi)؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. سنة واحدة.</li>
+                        <li>ب. خمس سنوات.</li>
+                        <li class="correct-answer">ج. اثنتا عشرة سنة.</li>
+                        <li>د. مدى الحياة.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Slides for Questions 60-62 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٦٠ - ٦٢</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٠. في أي وثيقة تاريخية هامة، حفظ لنا القديس أثناسيوس النص الكامل لقانون الإيمان النيقاوي ورسالة المجمع؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. كتابه "تجسد الكلمة".</li>
+                        <li>ب. كتابه "ضد الآريوسيين".</li>
+                        <li>ج. رسالته "عن قرارات مجمع نيقية" (De Decretis).</li>
+                        <li>د. كتابه "حياة الأنبا أنطونيوس".</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦١. من هما القسان اللذان حضرا كمندوبين عن سلفستر أسقف روما، ووقعا على القرارات باسمه؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. بطرس وبولس</li>
+                        <li>ب. فيتوس (فيكتور) وفنسنتيوس</li>
+                        <li>ج. أمبروسيوس وأوغسطينوس</li>
+                        <li>د. أوريجانوس وكلمنضس</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٢. ما هو المصطلح الذي استخدمه الآريوسيون المتطرفون لوصف علاقة الابن بالآب، ويعني "غير شبيه" على الإطلاق؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أوموسيوس</li>
+                        <li>ب. أومويوسيوس</li>
+                        <li>ج. أنومويس (Anomoeans)</li>
+                        <li>د. هيتروسيوس</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٦٠ - ٦٢</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٠. في أي وثيقة تاريخية هامة، حفظ لنا القديس أثناسيوس النص الكامل لقانون الإيمان النيقاوي ورسالة المجمع؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. كتابه "تجسد الكلمة".</li>
+                        <li>ب. كتابه "ضد الآريوسيين".</li>
+                        <li class="correct-answer">ج. رسالته "عن قرارات مجمع نيقية" (De Decretis).</li>
+                        <li>د. كتابه "حياة الأنبا أنطونيوس".</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦١. من هما القسان اللذان حضرا كمندوبين عن سلفستر أسقف روما، ووقعا على القرارات باسمه؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. بطرس وبولس</li>
+                        <li class="correct-answer">ب. فيتوس (فيكتور) وفنسنتيوس</li>
+                        <li>ج. أمبروسيوس وأوغسطينوس</li>
+                        <li>د. أوريجانوس وكلمنضس</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٢. ما هو المصطلح الذي استخدمه الآريوسيون المتطرفون لوصف علاقة الابن بالآب، ويعني "غير شبيه" على الإطلاق؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أوموسيوس</li>
+                        <li>ب. أومويوسيوس</li>
+                        <li class="correct-answer">ج. أنومويس (Anomoeans)</li>
+                        <li>د. هيتروسيوس</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 63-65 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٦٣ - ٦٥</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٣. ما هو الأثر الرعوي للقانون الخامس الذي يوجب عقد المجامع الإقليمية مرتين سنوياً؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. ضمان عدم بقاء أي شخص تحت عقوبة الحرم بشكل ظالم أو لفترة طويلة دون مراجعة.</li>
+                        <li>ب. التأكد من أن الأساقفة يتقابلون بانتظام.</li>
+                        <li>ج. مناقشة الأمور المالية للكنيسة.</li>
+                        <li>د. انتخاب أساقفة جدد.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٤. أي من آباء الكنيسة الكبار (عاش بعد نيقية) قدم التمييز اللاهوتي الدقيق بين "الجوهر" و "الأقنوم"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. القديس كيرلس الكبير</li>
+                        <li>ب. الآباء الكبادوكيون (باسيليوس وغريغوريوس).</li>
+                        <li>ج. القديس أوغسطينوس</li>
+                        <li>د. القديس يوحنا ذهبي الفم.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٥. لماذا كان القانون السادس مهماً ليس فقط للإسكندرية، بل للنظام الكنسي بأكمله؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه ألغى سلطة الأساقفة الصغار.</li>
+                        <li>ب. لأنه أقرّ بنظام "المراكز الكنسية الكبرى" التي لها سلطة قضائية على مناطق جغرافية واسعة.</li>
+                        <li>ج. لأنه فرض اللغة اليونانية على الجميع.</li>
+                        <li>د. لأنه وحد الطقوس الليتورجية.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٦٣ - ٦٥</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٣. ما هو الأثر الرعوي للقانون الخامس الذي يوجب عقد المجامع الإقليمية مرتين سنوياً؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li class="correct-answer">أ. ضمان عدم بقاء أي شخص تحت عقوبة الحرم بشكل ظالم أو لفترة طويلة دون مراجعة.</li>
+                        <li>ب. التأكد من أن الأساقفة يتقابلون بانتظام.</li>
+                        <li>ج. مناقشة الأمور المالية للكنيسة.</li>
+                        <li>د. انتخاب أساقفة جدد.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٤. أي من آباء الكنيسة الكبار (عاش بعد نيقية) قدم التمييز اللاهوتي الدقيق بين "الجوهر" و "الأقنوم"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. القديس كيرلس الكبير</li>
+                        <li class="correct-answer">ب. الآباء الكبادوكيون (باسيليوس وغريغوريوس).</li>
+                        <li>ج. القديس أوغسطينوس</li>
+                        <li>د. القديس يوحنا ذهبي الفم.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٥. لماذا كان القانون السادس مهماً ليس فقط للإسكندرية، بل للنظام الكنسي بأكمله؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه ألغى سلطة الأساقفة الصغار.</li>
+                        <li class="correct-answer">ب. لأنه أقرّ بنظام "المراكز الكنسية الكبرى" التي لها سلطة قضائية على مناطق جغرافية واسعة.</li>
+                        <li>ج. لأنه فرض اللغة اليونانية على الجميع.</li>
+                        <li>د. لأنه وحد الطقوس الليتورجية.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 66-68 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٦٦ - ٦٨</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٦. من هو الأسقف الذي كان من أشد المدافعين عن إيمان نيقية، لكنه اتُهم لاحقاً بالوقوع في هرطقة سابيليوس؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. يوسابيوس القيصري</li>
+                        <li>ب. مارسيلوس الأنقيري</li>
+                        <li>ج. أوسطاثيوس الأنطاكي</li>
+                        <li>د. هوسيوس القرطبي</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٧. ما هو المنطق اللاهوتي وراء قول المجمع بأن تحديد عيد القيامة يجب أن يكون "بدون اليهود"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. عداء لليهود كشعب.</li>
+                        <li>ب. لتأكيد استقلالية المسيحية القائمة على حدث القيامة وليس على رموز العهد القديم.</li>
+                        <li>ج. لأن حسابات اليهود الفلكية كانت خاطئة.</li>
+                        <li>د. لأنهم كانوا يحتفلون في يوم مختلف من الأسبوع.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٨. إلى جانب الحرومات، ما هو الإجراء العملي الآخر الذي اتخذه المجمع لضمان قبول قراراته؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. إجبار جميع الأساقفة الحاضرين على التوقيع على الوثيقة.</li>
+                        <li>ب. توزيع نسخ من القرارات على جميع الإيبارشيات.</li>
+                        <li>ج. إرسال رسالة رسمية إلى الكنائس الكبرى.</li>
+                        <li>د. كل ما سبق.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٦٦ - ٦٨</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٦. من هو الأسقف الذي كان من أشد المدافعين عن إيمان نيقية، لكنه اتُهم لاحقاً بالوقوع في هرطقة سابيليوس؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. يوسابيوس القيصري</li>
+                        <li class="correct-answer">ب. مارسيلوس الأنقيري</li>
+                        <li>ج. أوسطاثيوس الأنطاكي</li>
+                        <li>د. هوسيوس القرطبي</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٧. ما هو المنطق اللاهوتي وراء قول المجمع بأن تحديد عيد القيامة يجب أن يكون "بدون اليهود"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. عداء لليهود كشعب.</li>
+                        <li class="correct-answer">ب. لتأكيد استقلالية المسيحية القائمة على حدث القيامة وليس على رموز العهد القديم.</li>
+                        <li>ج. لأن حسابات اليهود الفلكية كانت خاطئة.</li>
+                        <li>د. لأنهم كانوا يحتفلون في يوم مختلف من الأسبوع.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٨. إلى جانب الحرومات، ما هو الإجراء العملي الآخر الذي اتخذه المجمع لضمان قبول قراراته؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. إجبار جميع الأساقفة الحاضرين على التوقيع على الوثيقة.</li>
+                        <li>ب. توزيع نسخ من القرارات على جميع الإيبارشيات.</li>
+                        <li>ج. إرسال رسالة رسمية إلى الكنائس الكبرى.</li>
+                        <li class="correct-answer">د. كل ما سبق.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 69-71 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٦٩ - ٧١</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٩. كيف أثرت قرارات نيقية بخصوص الميليتيين على خدمة القديس أثناسيوس لاحقاً؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أدت إلى سلام دائم في مصر.</li>
+                        <li>ب. فشل الحل، وتحالف الميليتيون مع الآريوسيين وشكلوا معارضة شرسة ضده.</li>
+                        <li>ج. انتهى الانشقاق الميليتي تماماً.</li>
+                        <li>د. أصبح ميليتوس مساعداً للقديس أثناسيوس.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٠. ماذا يعني مصطلح "التقليد الرسولي" في سياق الدفاع عن إيمان نيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مجموعة من العادات والتقاليد الشعبية.</li>
+                        <li>ب. الإيمان القويم الذي تم تسليمه من المسيح للرسل، ومن الرسل للأساقفة عبر الأجيال.</li>
+                        <li>ج. فقط كتابات الرسل في العهد الجديد.</li>
+                        <li>د. التقليد الشفوي فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧١. لماذا كان كرسي الإسكندرية يُعرف بـ "الكرسي المرقسي"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأن القديس مرقس ولد في الإسكندرية.</li>
+                        <li>ب. لأنه، بحسب التقليد الكنسي، هو من أسس الكنيسة في مصر واستشهد في الإسكندرية.</li>
+                        <li>ج. لأنه كان تلميذاً للبابا ألكسندروس.</li>
+                        <li>د. لأن إنجيله كان الأكثر قراءة في مصر.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٦٩ - ٧١</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٦٩. كيف أثرت قرارات نيقية بخصوص الميليتيين على خدمة القديس أثناسيوس لاحقاً؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أدت إلى سلام دائم في مصر.</li>
+                        <li class="correct-answer">ب. فشل الحل، وتحالف الميليتيون مع الآريوسيين وشكلوا معارضة شرسة ضده.</li>
+                        <li>ج. انتهى الانشقاق الميليتي تماماً.</li>
+                        <li>د. أصبح ميليتوس مساعداً للقديس أثناسيوس.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٠. ماذا يعني مصطلح "التقليد الرسولي" في سياق الدفاع عن إيمان نيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مجموعة من العادات والتقاليد الشعبية.</li>
+                        <li class="correct-answer">ب. الإيمان القويم الذي تم تسليمه من المسيح للرسل، ومن الرسل للأساقفة عبر الأجيال.</li>
+                        <li>ج. فقط كتابات الرسل في العهد الجديد.</li>
+                        <li>د. التقليد الشفوي فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧١. لماذا كان كرسي الإسكندرية يُعرف بـ "الكرسي المرقسي"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأن القديس مرقس ولد في الإسكندرية.</li>
+                        <li class="correct-answer">ب. لأنه، بحسب التقليد الكنسي، هو من أسس الكنيسة في مصر واستشهد في الإسكندرية.</li>
+                        <li>ج. لأنه كان تلميذاً للبابا ألكسندروس.</li>
+                        <li>د. لأن إنجيله كان الأكثر قراءة في مصر.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 72-74 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٧٢ - ٧٤</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٢. ما هي أهمية رسالة القديس أثناسيوس الفصحية رقم 39؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. كانت رسالة سياسية للإمبراطور.</li>
+                        <li>ب. هي أقدم قائمة تاريخية معروفة تحتوي على الـ 27 سفراً للعهد الجديد كما نعرفها اليوم.</li>
+                        <li>ج. كانت قصيدة شعرية عن القيامة.</li>
+                        <li>د. كانت تحدد موعد عيد الميلاد.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٣. ماذا يعني لقب القديس أثناسيوس الشهير "Contra Mundum"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أثناسيوس الرسولي</li>
+                        <li>ب. أثناسيوس اللاهوتي</li>
+                        <li>ج. أثناسيوس ضد العالم</li>
+                        <li>د. أثناسيوس العظيم</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٤. ما هو الفرق الدقيق بين "أوموسيوس" و "أومويوسيوس"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لا يوجد فرق، خطأ إملائي فقط.</li>
+                        <li>ب. "أوموسيوس" (مساوٍ في الجوهر) تؤكد الوحدة الكاملة، بينما "أومويوسيوس" (شبيه في الجوهر) كانت صيغة توفيقية.</li>
+                        <li>ج. "أوموسيوس" كانت كلمة الآريوسيين.</li>
+                        <li>د. "أومويوسيوس" كانت كلمة الأرثوذكس.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٧٢ - ٧٤</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٢. ما هي أهمية رسالة القديس أثناسيوس الفصحية رقم 39؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. كانت رسالة سياسية للإمبراطور.</li>
+                        <li class="correct-answer">ب. هي أقدم قائمة تاريخية معروفة تحتوي على الـ 27 سفراً للعهد الجديد كما نعرفها اليوم.</li>
+                        <li>ج. كانت قصيدة شعرية عن القيامة.</li>
+                        <li>د. كانت تحدد موعد عيد الميلاد.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٣. ماذا يعني لقب القديس أثناسيوس الشهير "Contra Mundum"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أثناسيوس الرسولي</li>
+                        <li>ب. أثناسيوس اللاهوتي</li>
+                        <li class="correct-answer">ج. أثناسيوس ضد العالم</li>
+                        <li>د. أثناسيوس العظيم</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٤. ما هو الفرق الدقيق بين "أوموسيوس" و "أومويوسيوس"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لا يوجد فرق، خطأ إملائي فقط.</li>
+                        <li class="correct-answer">ب. "أوموسيوس" (مساوٍ في الجوهر) تؤكد الوحدة الكاملة، بينما "أومويوسيوس" (شبيه في الجوهر) كانت صيغة توفيقية.</li>
+                        <li>ج. "أوموسيوس" كانت كلمة الآريوسيين.</li>
+                        <li>د. "أومويوسيوس" كانت كلمة الأرثوذكس.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 75-77 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٧٥ - ٧٧</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٥. أي من هذه الصفات لم تُستخدم في قانون الإيمان النيقاوي الأصلي لوصف الكنيسة؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. واحدة</li>
+                        <li>ب. جامعة (كاثوليكية)</li>
+                        <li>ج. رسولية</li>
+                        <li>د. كل هذه الصفات لم تُذكر صراحةً وأضيفت لاحقاً.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٦. ما هي السلطة التي يمنحها القانون الرابع للأسقف المتروبوليت في سيامة الأساقفة؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لا يمنحه أي سلطة.</li>
+                        <li>ب. يجب أن يقوم هو بالسيامة منفرداً.</li>
+                        <li>ج. له حق التصديق النهائي على اختيار وسيامة الأسقف الجديد.</li>
+                        <li>د. له حق الاعتراض (الفيتو) فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٧. كيف يُظهر القانون العشرون اهتمام المجمع بالوحدة في الممارسات الليتورجية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. بفرضه لغة موحدة للصلاة.</li>
+                        <li>ب. بفرضه لوضعية جسدية موحدة (الوقوف) في أوقات الفرح القيامي.</li>
+                        <li>ج. بفرضه رتبة قداس موحدة.</li>
+                        <li>د. بفرضه ملابس كهنوتية موحدة.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٧٥ - ٧٧</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٥. أي من هذه الصفات لم تُستخدم في قانون الإيمان النيقاوي الأصلي لوصف الكنيسة؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. واحدة</li>
+                        <li>ب. جامعة (كاثوليكية)</li>
+                        <li>ج. رسولية</li>
+                        <li class="correct-answer">د. كل هذه الصفات لم تُذكر صراحةً وأضيفت لاحقاً.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٦. ما هي السلطة التي يمنحها القانون الرابع للأسقف المتروبوليت في سيامة الأساقفة؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لا يمنحه أي سلطة.</li>
+                        <li>ب. يجب أن يقوم هو بالسيامة منفرداً.</li>
+                        <li class="correct-answer">ج. له حق التصديق النهائي على اختيار وسيامة الأسقف الجديد.</li>
+                        <li>د. له حق الاعتراض (الفيتو) فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٧. كيف يُظهر القانون العشرون اهتمام المجمع بالوحدة في الممارسات الليتورجية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. بفرضه لغة موحدة للصلاة.</li>
+                        <li class="correct-answer">ب. بفرضه لوضعية جسدية موحدة (الوقوف) في أوقات الفرح القيامي.</li>
+                        <li>ج. بفرضه رتبة قداس موحدة.</li>
+                        <li>د. بفرضه ملابس كهنوتية موحدة.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 78-80 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٧٨ - ٨٠</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٨. ما هو كتاب القديس أثناسيوس الذي يروي فيه سيرة حياة أب الرهبنة؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. تجسد الكلمة</li>
+                        <li>ب. ضد الآريوسيين</li>
+                        <li>ج. حياة الأنبا أنطونيوس</li>
+                        <li>د. الرسالة إلى الوثنيين</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٩. لماذا يمكن اعتبار هرطقة آريوس "ترويجاً لتعدد الآلهة"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأن آريوس كان يعبد آلهة وثنية.</li>
+                        <li>ب. لأنها بعبادتها للمسيح "المخلوق"، كانت تدعو لعبادة كائن ليس هو الإله الحقيقي الواحد.</li>
+                        <li>ج. لأن آريوس قال بوجود ثلاثة آلهة.</li>
+                        <li>د. لأن آريوس أنكر وجود الله.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٠. أي مجمع مسكوني انعقد عام 381م وأكد على صحة إيمان نيقية وأكمل قانون الإيمان؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مجمع أفسس</li>
+                        <li>ب. مجمع خلقيدونية</li>
+                        <li>ج. مجمع سارديكا</li>
+                        <li>د. مجمع القسطنطينية الأول</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٧٨ - ٨٠</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٨. ما هو كتاب القديس أثناسيوس الذي يروي فيه سيرة حياة أب الرهبنة؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. تجسد الكلمة</li>
+                        <li>ب. ضد الآريوسيين</li>
+                        <li class="correct-answer">ج. حياة الأنبا أنطونيوس</li>
+                        <li>د. الرسالة إلى الوثنيين</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٧٩. لماذا يمكن اعتبار هرطقة آريوس "ترويجاً لتعدد الآلهة"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأن آريوس كان يعبد آلهة وثنية.</li>
+                        <li class="correct-answer">ب. لأنها بعبادتها للمسيح "المخلوق"، كانت تدعو لعبادة كائن ليس هو الإله الحقيقي الواحد.</li>
+                        <li>ج. لأن آريوس قال بوجود ثلاثة آلهة.</li>
+                        <li>د. لأن آريوس أنكر وجود الله.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٠. أي مجمع مسكوني انعقد عام 381م وأكد على صحة إيمان نيقية وأكمل قانون الإيمان؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مجمع أفسس</li>
+                        <li>ب. مجمع خلقيدونية</li>
+                        <li>ج. مجمع سارديكا</li>
+                        <li class="correct-answer">د. مجمع القسطنطينية الأول</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 81-83 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٨١ - ٨٣</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨١. ما هو المبدأ الرعوي الذي يكمن خلف القانون 13 الذي يصر على إعطاء "الزخيرة" للمنازعين؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أن العقوبة أهم من الرحمة.</li>
+                        <li>ب. أن رحمة الله ورغبته في الخلاص تسمو فوق قوانين التوبة في اللحظات الأخيرة.</li>
+                        <li>ج. أن جميع الخطايا تُغفر تلقائياً عند الموت.</li>
+                        <li>د. أن التناول ليس مهماً للخلاص.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٢. أي من هذه العبارات "لم تكن" ضمن الحرومات الملحقة بقانون الإيمان النيقاوي الأصلي؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. الذين يقولون أن الابن من جوهر آخر.</li>
+                        <li>ب. الذين يقولون أن الابن قابل للتغيير أو التحول.</li>
+                        <li>ج. الذين يقولون "كان هناك وقت لم يكن فيه موجوداً".</li>
+                        <li>د. الذين يقولون أن الروح القدس منبثق من الآب والابن.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٣. ما هو التأثير النهائي للمجمع على العلاقة بين الكراسي الرسولية الكبرى؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أخضعها جميعاً لسلطة روما.</li>
+                        <li>ب. ألغى سلطتها وجعل كل الأساقفة متساوين.</li>
+                        <li>ج. اعترف بسلطاتهم التقليدية القائمة وعززها كأساس للنظام الكنسي.</li>
+                        <li>د. أخضعها جميعاً لسلطة الإمبراطور.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٨١ - ٨٣</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨١. ما هو المبدأ الرعوي الذي يكمن خلف القانون 13 الذي يصر على إعطاء "الزخيرة" للمنازعين؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أن العقوبة أهم من الرحمة.</li>
+                        <li class="correct-answer">ب. أن رحمة الله ورغبته في الخلاص تسمو فوق قوانين التوبة في اللحظات الأخيرة.</li>
+                        <li>ج. أن جميع الخطايا تُغفر تلقائياً عند الموت.</li>
+                        <li>د. أن التناول ليس مهماً للخلاص.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٢. أي من هذه العبارات "لم تكن" ضمن الحرومات الملحقة بقانون الإيمان النيقاوي الأصلي؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. الذين يقولون أن الابن من جوهر آخر.</li>
+                        <li>ب. الذين يقولون أن الابن قابل للتغيير أو التحول.</li>
+                        <li>ج. الذين يقولون "كان هناك وقت لم يكن فيه موجوداً".</li>
+                        <li class="correct-answer">د. الذين يقولون أن الروح القدس منبثق من الآب والابن.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٣. ما هو التأثير النهائي للمجمع على العلاقة بين الكراسي الرسولية الكبرى؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أخضعها جميعاً لسلطة روما.</li>
+                        <li>ب. ألغى سلطتها وجعل كل الأساقفة متساوين.</li>
+                        <li class="correct-answer">ج. اعترف بسلطاتهم التقليدية القائمة وعززها كأساس للنظام الكنسي.</li>
+                        <li>د. أخضعها جميعاً لسلطة الإمبراطور.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 84-86 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٨٤ - ٨٦</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٤. ماذا كان لقب "عمود الدين" الذي أُطلق على أحد باباوات الإسكندرية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. هذا اللقب لم يُطلق على أحد، بل هو وصف عام.</li>
+                        <li>ب. أُطلق على القديس أثناسيوس.</li>
+                        <li>ج. أُطلق على القديس كيرلس الكبير.</li>
+                        <li>د. أُطلق على البابا ديوسقورس.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٥. ما هي أهمية كتاب "تاريخ الكنيسة" ليوسابيوس القيصري؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لا أهمية له، لأنه كان آريوسياً.</li>
+                        <li>ب. هو أحد أهم وأقدم المصادر التاريخية التي تروي تاريخ المسيحية حتى عهد قسطنطين.</li>
+                        <li>ج. هو مجرد مجموعة من القصص الخيالية.</li>
+                        <li>د. يركز فقط على تاريخ كنيسة روما.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٦. لماذا يعتبر الدفاع عن ألوهية المسيح الحقيقية أمراً جوهرياً للإيمان المسيحي؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه يضمن مكانة الكهنة.</li>
+                        <li>ب. لأنه أساس عقيدة الثالوث والخلاص، وبدونه تصبح العبادة نوعاً من الوثنية.</li>
+                        <li>ج. لأنه يرضي الفلاسفة.</li>
+                        <li>د. لأنه شرط للحصول على دعم الدولة.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٨٤ - ٨٦</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٤. ماذا كان لقب "عمود الدين" الذي أُطلق على أحد باباوات الإسكندرية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. هذا اللقب لم يُطلق على أحد، بل هو وصف عام.</li>
+                        <li>ب. أُطلق على القديس أثناسيوس.</li>
+                        <li class="correct-answer">ج. أُطلق على القديس كيرلس الكبير.</li>
+                        <li>د. أُطلق على البابا ديوسقورس.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٥. ما هي أهمية كتاب "تاريخ الكنيسة" ليوسابيوس القيصري؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لا أهمية له، لأنه كان آريوسياً.</li>
+                        <li class="correct-answer">ب. هو أحد أهم وأقدم المصادر التاريخية التي تروي تاريخ المسيحية حتى عهد قسطنطين.</li>
+                        <li>ج. هو مجرد مجموعة من القصص الخيالية.</li>
+                        <li>د. يركز فقط على تاريخ كنيسة روما.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٦. لماذا يعتبر الدفاع عن ألوهية المسيح الحقيقية أمراً جوهرياً للإيمان المسيحي؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه يضمن مكانة الكهنة.</li>
+                        <li class="correct-answer">ب. لأنه أساس عقيدة الثالوث والخلاص، وبدونه تصبح العبادة نوعاً من الوثنية.</li>
+                        <li>ج. لأنه يرضي الفلاسفة.</li>
+                        <li>د. لأنه شرط للحصول على دعم الدولة.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 87-89 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٨٧ - ٨٩</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٧. ما هو "مجمع سارديكا" (حوالي 343م) وما علاقته بنيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مجمع آريوسي ألغى قرارات نيقية.</li>
+                        <li>ب. مجمع أكد بقوة على براءة القديس أثناسيوس وصحة إيمان نيقية.</li>
+                        <li>ج. مجمع لم يناقش قضية نيقية.</li>
+                        <li>د. مجمع محلي في مصر.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٨. كيف استخدم القديس أثناسيوس آية "الكلمة صار جسداً" (يو 1: 14) ضد آريوس؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. ليثبت أن المسيح كان له جسد فقط.</li>
+                        <li>ب. ليثبت أن "الكلمة" الأزلي الإلهي هو من اتخذ جسداً، وليس كائناً مخلوقاً.</li>
+                        <li>ج. ليثبت أن الجسد أهم من الروح.</li>
+                        <li>د. لم يستخدم هذه الآية.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٩. كم عدد المرات التي نُفي فيها القديس أثناسيوس عن كرسيه بسبب تمسكه بإيمان نيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مرة واحدة.</li>
+                        <li>ب. مرتين.</li>
+                        <li>ج. خمس مرات.</li>
+                        <li>د. لم يُنفَ أبداً.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٨٧ - ٨٩</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٧. ما هو "مجمع سارديكا" (حوالي 343م) وما علاقته بنيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مجمع آريوسي ألغى قرارات نيقية.</li>
+                        <li class="correct-answer">ب. مجمع أكد بقوة على براءة القديس أثناسيوس وصحة إيمان نيقية.</li>
+                        <li>ج. مجمع لم يناقش قضية نيقية.</li>
+                        <li>د. مجمع محلي في مصر.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٨. كيف استخدم القديس أثناسيوس آية "الكلمة صار جسداً" (يو 1: 14) ضد آريوس؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. ليثبت أن المسيح كان له جسد فقط.</li>
+                        <li class="correct-answer">ب. ليثبت أن "الكلمة" الأزلي الإلهي هو من اتخذ جسداً، وليس كائناً مخلوقاً.</li>
+                        <li>ج. ليثبت أن الجسد أهم من الروح.</li>
+                        <li>د. لم يستخدم هذه الآية.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٨٩. كم عدد المرات التي نُفي فيها القديس أثناسيوس عن كرسيه بسبب تمسكه بإيمان نيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مرة واحدة.</li>
+                        <li>ب. مرتين.</li>
+                        <li class="correct-answer">ج. خمس مرات.</li>
+                        <li>د. لم يُنفَ أبداً.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 90-92 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٩٠ - ٩٢</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٠. ماذا كان مصير "الحزب اليوسابي" بعد وفاة قسطنطين؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. اختفوا تماماً.</li>
+                        <li>ب. سيطروا على سياسة الكنيسة في الشرق في عهد الإمبراطور قنسطانطيوس الثاني.</li>
+                        <li>ج. انضموا جميعاً إلى أثناسيوس.</li>
+                        <li>د. أسسوا ديانة جديدة.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩١. أي من قرارات المجمع يُظهر بوضوح اهتمام الكنيسة بالرعاية الرعوية حتى لمن ارتكبوا أفظع الخطايا؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. القوانين التي تفرض الحرم الفوري والدائم.</li>
+                        <li>ب. القوانين التي تضع أنظمة توبة طويلة ولكنها محددة، مما يفتح باب الرجاء.</li>
+                        <li>ج. القوانين التي تمنع سيامة المرتدين.</li>
+                        <li>د. القوانين التي تخص الربا.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٢. ما هو المفهوم الذي تؤكده عبارة "الذي ليس لملكه انقضاء" التي أضيفت لاحقاً لقانون الإيمان؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. تأكيد على أن ملك المسيح أبدي، رداً على هرطقات قالت إن ملكه سينتهي.</li>
+                        <li>ب. تأكيد على أن المسيح هو ملك اليهود فقط.</li>
+                        <li>ج. تأكيد على قوة الإمبراطورية الرومانية.</li>
+                        <li>د. أن الكنيسة تحكم العالم.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٩٠ - ٩٢</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٠. ماذا كان مصير "الحزب اليوسابي" بعد وفاة قسطنطين؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. اختفوا تماماً.</li>
+                        <li class="correct-answer">ب. سيطروا على سياسة الكنيسة في الشرق في عهد الإمبراطور قنسطانطيوس الثاني.</li>
+                        <li>ج. انضموا جميعاً إلى أثناسيوس.</li>
+                        <li>د. أسسوا ديانة جديدة.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩١. أي من قرارات المجمع يُظهر بوضوح اهتمام الكنيسة بالرعاية الرعوية حتى لمن ارتكبوا أفظع الخطايا؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. القوانين التي تفرض الحرم الفوري والدائم.</li>
+                        <li class="correct-answer">ب. القوانين التي تضع أنظمة توبة طويلة ولكنها محددة، مما يفتح باب الرجاء.</li>
+                        <li>ج. القوانين التي تمنع سيامة المرتدين.</li>
+                        <li>د. القوانين التي تخص الربا.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٢. ما هو المفهوم الذي تؤكده عبارة "الذي ليس لملكه انقضاء" التي أضيفت لاحقاً لقانون الإيمان؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li class="correct-answer">أ. تأكيد على أن ملك المسيح أبدي، رداً على هرطقات قالت إن ملكه سينتهي.</li>
+                        <li>ب. تأكيد على أن المسيح هو ملك اليهود فقط.</li>
+                        <li>ج. تأكيد على قوة الإمبراطورية الرومانية.</li>
+                        <li>د. أن الكنيسة تحكم العالم.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 93-95 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٩٣ - ٩٥</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٣. ما هو الإرث الدائم لمجمع نيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. كان مجرد حدث تاريخي وانتهى.</li>
+                        <li>ب. أنه أسس سابقة للمجامع المسكونية ووضع قانون الإيمان الذي لا يزال أساس الإيمان.</li>
+                        <li>ج. أنه حل كل مشاكل الكنيسة إلى الأبد.</li>
+                        <li>د. أنه فصل الكنيسة عن الدولة.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٤. من هو الإمبراطور الذي جعل الإيمان النيقاوي هو الإيمان الرسمي الوحيد للإمبراطورية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. قسطنطين الكبير</li>
+                        <li>ب. يوليانوس الجاحد</li>
+                        <li>ج. فالنس الآريوسي</li>
+                        <li>د. ثيؤدوسيوس الكبير</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٥. لماذا يمكن القول إن القديس أثناسيوس هو "ضمير" الكنيسة في القرن الرابع؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه كان يكتب رسائل جميلة.</li>
+                        <li>ب. لأنه وقف شبه وحيد، متمسكاً بالحقيقة التي أقرها المجمع ضد الأباطرة والأساقفة.</li>
+                        <li>ج. لأنه كان أغنى أسقف.</li>
+                        <li>د. لأنه كان يتمتع بصحة جيدة.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٩٣ - ٩٥</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٣. ما هو الإرث الدائم لمجمع نيقية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. كان مجرد حدث تاريخي وانتهى.</li>
+                        <li class="correct-answer">ب. أنه أسس سابقة للمجامع المسكونية ووضع قانون الإيمان الذي لا يزال أساس الإيمان.</li>
+                        <li>ج. أنه حل كل مشاكل الكنيسة إلى الأبد.</li>
+                        <li>د. أنه فصل الكنيسة عن الدولة.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٤. من هو الإمبراطور الذي جعل الإيمان النيقاوي هو الإيمان الرسمي الوحيد للإمبراطورية؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. قسطنطين الكبير</li>
+                        <li>ب. يوليانوس الجاحد</li>
+                        <li>ج. فالنس الآريوسي</li>
+                        <li class="correct-answer">د. ثيؤدوسيوس الكبير</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٥. لماذا يمكن القول إن القديس أثناسيوس هو "ضمير" الكنيسة في القرن الرابع؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأنه كان يكتب رسائل جميلة.</li>
+                        <li class="correct-answer">ب. لأنه وقف شبه وحيد، متمسكاً بالحقيقة التي أقرها المجمع ضد الأباطرة والأساقفة.</li>
+                        <li>ج. لأنه كان أغنى أسقف.</li>
+                        <li>د. لأنه كان يتمتع بصحة جيدة.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 96-98 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٩٦ - ٩٨</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٦. ما هي أهمية عبارة "بمعمودية واحدة لمغفرة الخطايا"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. تسمح بإعادة المعمودية عدة مرات.</li>
+                        <li>ب. تؤكد على وحدانية سر المعمودية وعدم تكراره، وتربطه مباشرة بغفران الخطايا.</li>
+                        <li>ج. تؤكد على أن المعمودية لا تغفر الخطايا.</li>
+                        <li>د. تؤكد على ضرورة معمودية الأطفال فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٧. لماذا كان انتصار عقيدة نيقية حتمياً من وجهة نظر لاهوت الخلاص؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأن الإمبراطور دعمها في النهاية.</li>
+                        <li>ب. لأن الكنيسة لا يمكن أن تستمر في عبادتها ليسوع إن لم يكن هو "الإله الحق".</li>
+                        <li>ج. لأنها كانت الأكثر منطقية فلسفياً.</li>
+                        <li>د. لأن أغلبية الأساقفة كانوا من مصر.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٨. كيف يُنظر إلى القديس أثناسيوس في التقليد القبطي؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مجرد بابا من باباوات الكنيسة.</li>
+                        <li>ب. البابا العشرون، "الرسولي"، حامي الإيمان، وأعظم شخصية دافعت عن لاهوت المسيح.</li>
+                        <li>ج. قديس ثانوي.</li>
+                        <li>د. مصلح سياسي.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٩٦ - ٩٨</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٦. ما هي أهمية عبارة "بمعمودية واحدة لمغفرة الخطايا"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. تسمح بإعادة المعمودية عدة مرات.</li>
+                        <li class="correct-answer">ب. تؤكد على وحدانية سر المعمودية وعدم تكراره، وتربطه مباشرة بغفران الخطايا.</li>
+                        <li>ج. تؤكد على أن المعمودية لا تغفر الخطايا.</li>
+                        <li>د. تؤكد على ضرورة معمودية الأطفال فقط.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٧. لماذا كان انتصار عقيدة نيقية حتمياً من وجهة نظر لاهوت الخلاص؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. لأن الإمبراطور دعمها في النهاية.</li>
+                        <li class="correct-answer">ب. لأن الكنيسة لا يمكن أن تستمر في عبادتها ليسوع إن لم يكن هو "الإله الحق".</li>
+                        <li>ج. لأنها كانت الأكثر منطقية فلسفياً.</li>
+                        <li>د. لأن أغلبية الأساقفة كانوا من مصر.</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٨. كيف يُنظر إلى القديس أثناسيوس في التقليد القبطي؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. مجرد بابا من باباوات الكنيسة.</li>
+                        <li class="correct-answer">ب. البابا العشرون، "الرسولي"، حامي الإيمان، وأعظم شخصية دافعت عن لاهوت المسيح.</li>
+                        <li>ج. قديس ثانوي.</li>
+                        <li>د. مصلح سياسي.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slides for Questions 99-100 -->
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-700">الأسئلة ٩٩ - ١٠٠</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٩. أي كتاب للقديس أثناسيوس يفند عبادة الأوثان ويُقرأ غالباً مع كتاب "تجسد الكلمة"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. ضد الآريوسيين</li>
+                        <li>ب. الرسائل إلى سرابيون</li>
+                        <li>ج. ضد الوثنيين (Contra Gentes)</li>
+                        <li>د. حياة أنطونيوس</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">١٠٠. الحروم الأخيرة في قانون نيقية تدين من يقول أن الابن "من هيبوستاسيس أو أوسيا مختلفة". ماذا تؤكد هذه العبارة بشكل قاطع؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أن للابن طبيعة بشرية فقط.</li>
+                        <li>ب. أن الابن والآب لهما نفس الكيان والجوهر الإلهي الواحد.</li>
+                        <li>ج. أن الابن والآب أقنومان منفصلان في الجوهر.</li>
+                        <li>د. أن الابن هو مجرد اسم آخر للآب.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide">
+                <h3 class="text-2xl font-bold text-center mb-6 text-green-700">إجابات الأسئلة ٩٩ - ١٠٠</h3>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">٩٩. أي كتاب للقديس أثناسيوس يفند عبادة الأوثان ويُقرأ غالباً مع كتاب "تجسد الكلمة"؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. ضد الآريوسيين</li>
+                        <li>ب. الرسائل إلى سرابيون</li>
+                        <li class="correct-answer">ج. ضد الوثنيين (Contra Gentes)</li>
+                        <li>د. حياة أنطونيوس</li>
+                    </ul>
+                </div>
+                <div class="question-block">
+                    <p class="text-lg font-bold mb-4">١٠٠. الحروم الأخيرة في قانون نيقية تدين من يقول أن الابن "من هيبوستاسيس أو أوسيا مختلفة". ماذا تؤكد هذه العبارة بشكل قاطع؟</p>
+                    <ul class="space-y-2 text-md">
+                        <li>أ. أن للابن طبيعة بشرية فقط.</li>
+                        <li class="correct-answer">ب. أن الابن والآب لهما نفس الكيان والجوهر الإلهي الواحد.</li>
+                        <li>ج. أن الابن والآب أقنومان منفصلان في الجوهر.</li>
+                        <li>د. أن الابن هو مجرد اسم آخر للآب.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- A final slide could be added for conclusion -->
+            <div class="slide flex flex-col items-center justify-center text-center h-[70vh] md:h-[60vh]">
+                <h1 class="text-3xl md:text-5xl font-bold text-gray-800">نهاية المسابقة</h1>
+                <h2 class="text-xl md:text-3xl text-gray-600 mt-4">شكراً لمشاركتكم!</h2>
+                <p class="text-lg text-gray-500 mt-8">بركة آباء مجمع نيقية تكون معنا جميعاً.</p>
+            </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <div class="bg-gray-200 p-4 flex items-center justify-between border-t">
+            <button id="prev-button" class="nav-button bg-gray-600 text-white py-2 px-4 sm:px-6 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">السابق</button>
+            <div id="slide-counter" class="text-gray-700 font-semibold text-md sm:text-lg"></div>
+            <button id="next-button" class="nav-button bg-blue-600 text-white py-2 px-4 sm:px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">التالي</button>
+        </div>
+    </div>
+
+    <script>
+        // Get all necessary elements from the DOM
+        const slides = document.querySelectorAll('.slide');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const slideCounter = document.getElementById('slide-counter');
+
+        let currentSlide = 0; // Initialize current slide index
+
+        // Function to show a specific slide and hide others
+        function showSlide(n) {
+            // Deactivate all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // Activate the target slide
+            if (slides[n]) {
+                slides[n].classList.add('active');
+            }
+
+            // Update the slide counter display
+            slideCounter.textContent = `${n + 1} / ${slides.length}`;
+
+            // Enable/disable navigation buttons based on position
+            prevButton.disabled = n === 0;
+            nextButton.disabled = n === slides.length - 1;
+        }
+
+        // Event listener for the "Next" button
+        nextButton.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Event listener for the "Previous" button
+        prevButton.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && !nextButton.disabled) {
+                nextButton.click();
+            } else if (e.key === 'ArrowLeft' && !prevButton.disabled) {
+                prevButton.click();
+            }
+        });
+
+        // Initial setup when the page loads
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
